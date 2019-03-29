@@ -1,7 +1,5 @@
 # Many-to-Many Active Record Basics in Rails
 
-Let's go over a few fundamental Active Record Commands.  
-
 For the purposes of these Examples I will assume that we have two `ApplicationRecord` classes created; `Widget` and `Maker`.  
 
 Each `Maker` produces multiple widgets, and each `Widget` may be produced by multiple makers.
@@ -9,7 +7,7 @@ Each `Maker` produces multiple widgets, and each `Widget` may be produced by mul
 ## Migrations
 
 In order to link these two classes in a Database, we will use three migrations;  
-- `CreateMaker`
+- `CreateMakers`
 - `CreateWidgets`
 - `CreateMakerWidgets`  
 
@@ -20,17 +18,17 @@ rails g[enerate] migration Create<migration_name>
 ```
 e.g. To create our `Maker` migration we would run:  
 ```
-rails g migration CreateMaker
+rails g migration CreateMakers
 ```
 or
 ```
-rails generate migration CreateMaker
+rails generate migration CreateMakers
 ```
 
 The migrations for `Maker` and `Widget` are fairly straight forward. Each widget might have a `string` "name" and an `integer` price. Maybe each `Maker` has a `string` name. Thus, for example the `Widget` migration should appear similar to:  
 
 ```
-class CreateWidget < ActiveRecord::Migration[5.1]
+class CreateWidgets < ActiveRecord::Migration[5.1]
   def change
     create_table :widget do |t|
       t.string :name
