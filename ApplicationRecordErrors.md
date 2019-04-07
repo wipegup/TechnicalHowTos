@@ -1,6 +1,6 @@
 # Using the "Errors" Feature of the Rail's Application Record
 
-The below code snippet should give context sufficient for starting to use `.errors` in Rails to provide substantive error messages when validating form information.
+The below code snippets should give context sufficient for starting to use `.errors` in Rails to provide substantive error messages when validating form information.
 
 Used [this article for reference on custom validations](https://blog.bigbinary.com/2016/05/03/rails-5-adds-a-way-to-get-information-about-types-of-failed-validations.html)
 
@@ -44,6 +44,13 @@ end
 # ./app/views/items/new.html.erb
 # In routes.rb:
 #   resources :items, only: [:new, :create]
+<% if @item.errors.any? %>
+<ul>
+  <% @item.errors.full_messages.each do |msg| %>
+  <li><%= msg %></li>
+  <% end %>
+</ul>
+<% end %>
 
 <%= form_for @item do |f| %>
   <%= f.label :name %>
@@ -66,17 +73,20 @@ RSpec.describe 'Repopulate new form and display errors' do
 
   click_button "Create Item"
 
+  expect(page).to have_field("Name", with:"Item 1")
+  expect(page).to have_content("Price can't be blank")
+
 end
 
 ```
 After clicking the `"Create Item"` button on the new form, the `create` method is entered into in the `ItemController`.  
 
-After running:  
+In the `create` method, after running:  
 ```
 @item = Item.new(item_info)
 ```
 
-The `@items` object has a number of useful properties:  
+The `@item` object has a number of useful properties:  
 
 - `@item.valid?` will evaluate to `false`
 - `@item.errors.any?` will evaluate to `true`
