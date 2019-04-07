@@ -98,9 +98,9 @@ Additionally, **because it was assigned to the instance variable `@item`** when 
 
 # Custom Validations
 
-As should be clear by now, these errors depend upon the validations within the Model.  
+As should be clear by now, these errors depend upon the [validations](https://guides.rubyonrails.org/active_record_validations.html) within the Model.  
 
-While many validations are available, custom validations may also be created:   
+While many validations are available, [custom validations](https://guides.rubyonrails.org/active_record_validations.html#message) may also be created:   
 
 ```
 class Item < ApplicationRecord
