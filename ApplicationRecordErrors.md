@@ -116,3 +116,19 @@ class Item < ApplicationRecord
   end
 end
 ```
+
+## Final Note
+
+You may customize how your attributes display in error messages.  
+
+For example, if you have an attributed in Item called `:total_quantity`, the error messages will convert that to `Total quantity`. If you want to change how it is displayed, navigate to `./config/locales/` Where you will find a `.yml` file relating to your languages of choice (I think) -- So for me, I see `./config/locales/en.yml`.  In that file add the following:  
+
+```
+en:
+  activerecord:
+    attributes:
+      item:
+        total_quantity: "Total Quantity"
+```
+
+And that should change the display name of your attribute in the errors.  
