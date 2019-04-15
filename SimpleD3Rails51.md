@@ -65,7 +65,7 @@ end
 
 ```  
 
-Note above how `::total` returns an `Array` with a single element. This will be explained in the [Javascript](#javascript) section  
+Note above how `::total` returns an `Array` with a single element. This is to aid in data binding with `.data()`, alluded to in the  be explained in the [Data Binding](#data-binding) section  
 
 Run: `rake db:{drop,create,migrate}`
 
