@@ -2,6 +2,8 @@
 
 This tutorial goes through the most basic steps of building a very simple [`d3`](https://d3js.org/) graphic.  
 
+[All code may be found here](https://github.com/wipegup/SimpleD3). All commits are directly related to section headers below
+
 The tutorial was built in Rails 5.1, and uses [`d3-rails`](https://github.com/iblue/d3-rails) and [`jquery`](https://jquery.com/).
 
 [This more extensive](http://gregpark.io/blog/live-d3-rails-plot/) demonstration was modernized and simplified.  
@@ -19,6 +21,8 @@ Similarly, a gem for `d3-rails` must be installed, and the attendant `d3` librar
 gem 'd3-rails'
 gem 'jquery-rails'
 ```
+Run `bundle install`  
+
 
 ```javascript
 // app/assets/javascripts/application.js
@@ -156,12 +160,12 @@ Within the `respond_to` block, `format.js` is hit. At which point `Rails` search
 // app/views/clicks/create.js.erb
 
 $("#click-count").html("<%= @clicks[0] %>");
-reloadData();
+getData(redrawCircle);
 ```
 
 This `create.js.erb` file performs two actions.  
 - `$("#click-count").html("<%= @clicks[0] %>");`: Using `jquery`, find the element with the id of `click-count`. Replace the content of that element with the html[erb] of `"<%= @clicks[0] %>"`. Remember `@clicks` was already updated in the controller.
-- Run the user defined function `reloadData()`. This will be covered more in the [Javascript](#javascript) section, but is used to refresh the graphic.  
+- Run the user defined function `getData()`. This will be covered more in the [Javascript](#javascript) section, but is used to refresh the graphic.  
 
 Thus the page should be refreshed with the new
 
@@ -171,8 +175,86 @@ Clicking on the `Click Me, Redirect Refresh` yields a `POST` request to `/clicks
 Again, the click is created and `@clicks` is updated. Within the `respond_to` block, a redirect to the index is hit. Thus the **entire** page is refreshed, not just the graphic and click count.
 
 ## Javascript
+While some `javascript` was executed in `create.js.erb`, the majority is served from a file in the assets folder which contains multiple user-defined functions and instructions.  
 
+First the function that loads our data
 ```javascript
 // app/assets/javascripts/clicks.js
 
+// ajax (using jquery) to load data
+function getData(drawFunction){
+               $.ajax({
+                 type: 'GET',
+                 contentType: 'application/json; charset=utf-8',
+                 url: '/clicks',
+                 dataType: 'json',
+                 success: function(data){
+                   drawFunction(data);
+                 },
+                 failure: function(result){
+                   error();
+                 }
+               });
+             };
+
+// Error function for ajax failure
+function error() {
+   console.log("Error in Loading Data!");
+}
 ```
+
+`getData` is a function which takes a single parameter -- another function -- which is used to build the visualization of the data it retrieves.  
+
+The `ajax` request (accomplished with `jquery` syntax), defines the type of request (`GET`), url (`/clicks`), the data type we expect in return `dataType: 'json'`, what to do in case of success, and what to do in case of failure. [Explination of content v. dataType](https://stackoverflow.com/questions/18701282/what-is-content-type-and-datatype-in-an-ajax-request)  
+
+The data we receive through this request is exceedingly simple (an array of a single integer), this same request may be used to collect more complicated json.  
+
+If this ajax call succeeds, the `data` passed to `drawFunction` would be `[50]` if there were 50 clicks.  
+
+
+Below are the two functions that might be passed in as the `drawFunction`:  
+
+```javascript
+// app/assets/javascript/clicks.js
+
+function drawCircle(data){
+  d3.select('#circle')    // select element with id = 'circle'
+  .append('circle')     // create a circle element at that selector
+  .attr("cx", 50)       // define the x-location of the circle center
+  .attr("cy", 50)       // define the y-location of the circle center
+  .attr("r", data[0]);  // define the radius of the circle
+}
+
+function redrawCircle(data){
+  d3.select('#circle')    // select element with id = 'circle'
+    .select("circle")     // select the 'circle' element
+    .transition()         // specify a transition should occur
+    .attr("r", data[0]);  // specify which attributes should change
+}
+```
+
+The `drawCircle` function finds our `svg` tag via its id (`#circle`), creates a new [svg circle](https://www.w3schools.com/graphics/svg_circle.asp), defining values for the `cx`, `cy`, and `r` `attr`ibutes.  
+
+The `r`adius attribute is assigned the value of the first (and only) element in our data array. Note, this starts as a 0, so do not expect to see a circle appear until having clicked a number of times.  
+
+
+The `redrawCircle` Finds the circle that is already on the page, readies itself for a [`transition()`](https://www.tutorialspoint.com/d3js/d3js_transition.htm), and defines which `attr`ibutes should be changed -- the `r`adius to the new value of the data.  
+
+
+In `create.js.erb`, we saw where `redrawCircle` is passed/called to `getData`. However, the `drawCircle` function is passed/called within the `clicks.js` file, again using the  `jquery` [`.ready()`](https://www.w3schools.com/jquery/event_ready.asp) function, which will simply call `getData(drawCircle)` as soon as the page is loaded.
+
+```javascript
+// app/assets/javascript/clicks.js
+
+// load data upon page load
+//$(document).ready(function(){getData(drawCircle);}); is equivalent
+$(function(){
+  getData(drawCircle);
+});
+```
+
+## Binding Data
+
+For more complicated graphics, `d3`'s `.data()` function is useful. [Learn more here](https://medium.freecodecamp.org/learn-d3-js-in-5-minutes-c5ec29fb0725#53e2)
+
+An extremely simple example may be found in the `binding_data` branch of the associated repo. The two things that are demonstrated are: passing data in with `.data()`, and accessing data via a function.
