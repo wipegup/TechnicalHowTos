@@ -65,7 +65,7 @@ end
 
 ```  
 
-Note above how `::total` returns an `Array` with a single element. This is to aid in data binding with `.data()`, alluded to in the  be explained in the [Data Binding](#binding-data) section  
+Note above how `::total` returns an `Array` with a single element. This is to aid in data binding with `.data()`, alluded to in the [Data Binding](#binding-data) section  
 
 Run: `rake db:{drop,create,migrate}`
 
@@ -125,7 +125,7 @@ Unlike with the formats in `index`, at no time will we [explicitly] specify, to 
 
 However, though the call is different, the resulting action is still the same, a file with the name of the action (`create` in this case) with the particular extension `.js` will be run.  
 
-When executing the `create` action with a normal `html` `POST` request, the `.html` block will be executes; redirecting to the index.  
+When executing the `create` action with a normal `html` `POST` request, the `.html` block will be executed; redirecting to the index.  
 
 ## The View
 
