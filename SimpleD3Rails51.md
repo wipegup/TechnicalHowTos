@@ -34,7 +34,7 @@ Run `bundle install`
 ```
 
 ## The Database
-Our visualization will like with our database, specific through a `clicks` table. `clicks` will not be built out in any meaningful way. Each row will simply be an `id` with `timestamps`.  
+Our visualization will link with our database, specificly through a `clicks` table. `clicks` will not be built out in any meaningful way. Each row will simply be an `id` with `timestamps`.  
 
 Run: `rails g migration CreateClicks`  
 
