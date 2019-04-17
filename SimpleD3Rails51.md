@@ -23,7 +23,7 @@ gem 'jquery-rails'
 ```
 Run `bundle install`  
 
-
+Edit your `application.js` file to add the following:
 ```javascript
 // app/assets/javascripts/application.js
 // add:
