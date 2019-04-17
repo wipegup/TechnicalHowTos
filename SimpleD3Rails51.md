@@ -34,7 +34,7 @@ Edit your `application.js` file to add the following:
 ```
 
 ## The Database
-Our visualization will link with our database, specificly through a `clicks` table. `clicks` will not be built out in any meaningful way. Each row will simply be an `id` with `timestamps`.  
+Our visualization will link with our database, specificly through a `clicks` table. `clicks` will not be built out in any meaningful way. Each row will simply be an `id` with `timestamps`. 
 
 Run: `rails g migration CreateClicks`  
 
@@ -52,7 +52,7 @@ class CreateClicks < ActiveRecord::Migration[5.1]
 end
 ```
 
-Create an associated model, adding a `total` class method:  
+The model associated with `clicks` will have one class method - `total` - returning the count of clicks (as an array):  
 
 ```ruby
 # models/click.rb
