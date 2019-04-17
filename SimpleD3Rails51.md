@@ -167,7 +167,7 @@ This `create.js.erb` file performs two actions.
 - `$("#click-count").html("<%= @clicks[0] %>");`: Using `jquery`, find the element with the id of `click-count`. Replace the content of that element with the html[erb] of `"<%= @clicks[0] %>"`. Remember `@clicks` was already updated in the controller.
 - Run the user defined function `getData()`. This will be covered more in the [Javascript](#javascript) section, but is used to refresh the graphic.  
 
-Thus the page should be refreshed with the new
+Thus the page should be refreshed with the new click count (and associated graphic)
 
 
 Clicking on the `Click Me, Redirect Refresh` yields a `POST` request to `/clicks`, which enters the `create` action in the `clicks_controller`. Because `remote: false`, the format of the request is for `.html`.
